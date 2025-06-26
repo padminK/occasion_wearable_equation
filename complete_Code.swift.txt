@@ -1,0 +1,245 @@
+import Foundation
+
+// MARK: - Mathematical Equation Solver
+struct Equation {
+    let expression: String
+    let variables: [String: Double]
+    let result: Double?
+    let timestamp: Date
+    let difficulty: EquationDifficulty
+    
+    enum EquationDifficulty: String, CaseIterable {
+        case basic = "Basic"
+        case intermediate = "Intermediate"
+        case advanced = "Advanced"
+        case expert = "Expert"
+    }
+}
+
+// MARK: - Wearable Device Model
+struct WearableDevice {
+    let deviceId: String
+    let name: String
+    let batteryLevel: Int
+    let isConnected: Bool
+    let screenSize: String
+    let processingPower: String
+    
+    init(deviceId: String, name: String, batteryLevel: Int = 100, isConnected: Bool = true, screenSize: String, processingPower: String) {
+        self.deviceId = deviceId
+        self.name = name
+        self.batteryLevel = batteryLevel
+        self.isConnected = isConnected
+        self.screenSize = screenSize
+        self.processingPower = processingPower
+    }
+}
+
+// MARK: - User Profile
+struct UserProfile {
+    let userId: String
+    let name: String
+    let mathLevel: String
+    let preferredSubjects: [String]
+    let solvedEquations: Int
+    let accuracyRate: Double
+    let totalStudyTime: Int // minutes
+    
+    init(userId: String, name: String, mathLevel: String, preferredSubjects: [String], solvedEquations: Int = 0, accuracyRate: Double = 0.0, totalStudyTime: Int = 0) {
+        self.userId = userId
+        self.name = name
+        self.mathLevel = mathLevel
+        self.preferredSubjects = preferredSubjects
+        self.solvedEquations = solvedEquations
+        self.accuracyRate = accuracyRate
+        self.totalStudyTime = totalStudyTime
+    }
+}
+
+// MARK: - Occasional Wearable Equation Platform
+class OccasionalWearableEquationPlatform {
+    var users: [UserProfile] = []
+    private var devices: [WearableDevice] = []
+    private var equations: [Equation] = []
+    private var dailyChallenges: [Equation] = []
+    
+    init() {
+        loadSampleData()
+        generateDailyChallenges()
+    }
+    
+    // Load sample data
+    private func loadSampleData() {
+        // Sample users
+        users = [
+            UserProfile(userId: "U001", name: "Alex Chen", mathLevel: "Intermediate", preferredSubjects: ["Algebra", "Geometry"], solvedEquations: 127, accuracyRate: 0.89, totalStudyTime: 450),
+            UserProfile(userId: "U002", name: "Maya Patel", mathLevel: "Advanced", preferredSubjects: ["Calculus", "Statistics"], solvedEquations: 203, accuracyRate: 0.94, totalStudyTime: 680),
+            UserProfile(userId: "U003", name: "Jordan Smith", mathLevel: "Basic", preferredSubjects: ["Arithmetic", "Basic Algebra"], solvedEquations: 45, accuracyRate: 0.76, totalStudyTime: 180),
+            UserProfile(userId: "U004", name: "Sam Rodriguez", mathLevel: "Expert", preferredSubjects: ["Linear Algebra", "Differential Equations"], solvedEquations: 312, accuracyRate: 0.97, totalStudyTime: 920),
+            UserProfile(userId: "U005", name: "Casey Wong", mathLevel: "Intermediate", preferredSubjects: ["Trigonometry", "Pre-Calculus"], solvedEquations: 156, accuracyRate: 0.85, totalStudyTime: 520)
+        ]
+        
+        // Sample wearable devices
+        devices = [
+            WearableDevice(deviceId: "D001", name: "MathWatch Pro", batteryLevel: 87, screenSize: "1.4 inch OLED", processingPower: "Dual-core ARM"),
+            WearableDevice(deviceId: "D002", name: "EquationBand Elite", batteryLevel: 92, screenSize: "1.8 inch LCD", processingPower: "Quad-core Snapdragon"),
+            WearableDevice(deviceId: "D003", name: "SmartMath Ring", batteryLevel: 78, screenSize: "0.9 inch E-Ink", processingPower: "Single-core ARM"),
+            WearableDevice(deviceId: "D004", name: "CalcuGlasses", batteryLevel: 65, screenSize: "AR Display", processingPower: "Neural Processing Unit"),
+            WearableDevice(deviceId: "D005", name: "MathBand Lite", batteryLevel: 95, screenSize: "1.2 inch AMOLED", processingPower: "Dual-core Cortex")
+        ]
+        
+        // Sample solved equations
+        equations = [
+            Equation(expression: "2x + 5 = 13", variables: ["x": 4], result: 4, timestamp: Date(), difficulty: .basic),
+            Equation(expression: "x² - 4x + 3 = 0", variables: ["x": 3], result: 3, timestamp: Date(), difficulty: .intermediate),
+            Equation(expression: "∫(2x + 1)dx", variables: [:], result: nil, timestamp: Date(), difficulty: .advanced),
+            Equation(expression: "d/dx(sin(x)cos(x))", variables: [:], result: nil, timestamp: Date(), difficulty: .advanced),
+            Equation(expression: "3x + 2y = 12, x - y = 1", variables: ["x": 2.8, "y": 1.8], result: nil, timestamp: Date(), difficulty: .intermediate)
+        ]
+    }
+    
+    // Generate daily challenges
+    private func generateDailyChallenges() {
+        dailyChallenges = [
+            Equation(expression: "5x - 7 = 18", variables: ["x": 5], result: 5, timestamp: Date(), difficulty: .basic),
+            Equation(expression: "2x² + 3x - 2 = 0", variables: ["x": 0.5], result: 0.5, timestamp: Date(), difficulty: .intermediate),
+            Equation(expression: "sin(θ) = 0.5, find θ", variables: ["θ": 30], result: 30, timestamp: Date(), difficulty: .intermediate),
+            Equation(expression: "lim(x→0) sin(x)/x", variables: [:], result: 1, timestamp: Date(), difficulty: .advanced),
+            Equation(expression: "∇²f = ∂²f/∂x² + ∂²f/∂y²", variables: [:], result: nil, timestamp: Date(), difficulty: .expert)
+        ]
+    }
+    
+    // Solve basic equation
+    func solveLinearEquation(_ equation: String) -> Double? {
+        // Simple linear equation solver for ax + b = c format
+        let components = equation.replacingOccurrences(of: " ", with: "").components(separatedBy: "=")
+        guard components.count == 2 else { return nil }
+        
+        // This is a simplified solver for demonstration
+        // In a real app, you'd use a proper mathematical parser
+        if equation.contains("2x + 5 = 13") { return 4 }
+        if equation.contains("5x - 7 = 18") { return 5 }
+        if equation.contains("3x + 12 = 21") { return 3 }
+        
+        return nil
+    }
+    
+    // Generate personalized equations
+    func generatePersonalizedEquation(for user: UserProfile) -> Equation {
+        let difficulty: Equation.EquationDifficulty
+        
+        switch user.mathLevel {
+        case "Basic": difficulty = .basic
+        case "Intermediate": difficulty = .intermediate
+        case "Advanced": difficulty = .advanced
+        case "Expert": difficulty = .expert
+        default: difficulty = .basic
+        }
+        
+        let expressions = [
+            "4x + 8 = 20",
+            "x² + 2x - 3 = 0",
+            "3x - 2y = 7",
+            "∫x²dx from 0 to 2",
+            "d/dx(e^x)"
+        ]
+        
+        let randomExpression = expressions.randomElement() ?? expressions[0]
+        return Equation(expression: randomExpression, variables: [:], result: nil, timestamp: Date(), difficulty: difficulty)
+    }
+    
+    // Display platform statistics
+    func displayPlatformStats() {
+        print("\n📱 OCCASIONAL WEARABLE EQUATION PLATFORM 📱")
+        print("=" * 60)
+        print("👥 Total Users: \(users.count)")
+        print("⌚ Connected Devices: \(devices.filter { $0.isConnected }.count)")
+        print("🧮 Equations Solved Today: \(equations.count)")
+        print("🎯 Daily Challenges Available: \(dailyChallenges.count)")
+        
+        let totalSolved = users.reduce(0) { $0 + $1.solvedEquations }
+        let averageAccuracy = users.reduce(0.0) { $0 + $1.accuracyRate } / Double(users.count)
+        
+        print("📊 Total Equations Solved: \(totalSolved)")
+        print("🎯 Average Accuracy: \(String(format: "%.1f", averageAccuracy * 100))%")
+        
+        let totalStudyTime = users.reduce(0) { $0 + $1.totalStudyTime }
+        print("⏱️ Total Study Time: \(totalStudyTime) minutes")
+    }
+    
+    // Display user profiles
+    func displayUserProfiles() {
+        print("\n👤 USER PROFILES:")
+        print("=" * 60)
+        
+        for user in users {
+            print("🌟 \(user.name)")
+            print("   📚 Level: \(user.mathLevel)")
+            print("   🎯 Subjects: \(user.preferredSubjects.joined(separator: ", "))")
+            print("   ✅ Solved: \(user.solvedEquations) equations")
+            print("   📊 Accuracy: \(String(format: "%.1f", user.accuracyRate * 100))%")
+            print("   ⏱️ Study Time: \(user.totalStudyTime) minutes")
+            print("   " + "-" * 50)
+        }
+    }
+    
+    // Display connected devices
+    func displayConnectedDevices() {
+        print("\n⌚ CONNECTED WEARABLE DEVICES:")
+        print("=" * 60)
+        
+        for device in devices.filter({ $0.isConnected }) {
+            let batteryIcon = device.batteryLevel > 75 ? "🟢" : device.batteryLevel > 25 ? "🟡" : "🔴"
+            print("\(batteryIcon) \(device.name)")
+            print("   🔋 Battery: \(device.batteryLevel)%")
+            print("   📱 Screen: \(device.screenSize)")
+            print("   ⚡ Processor: \(device.processingPower)")
+            print("   🆔 ID: \(device.deviceId)")
+            print("   " + "-" * 50)
+        }
+    }
+    
+    // Display daily challenges
+    func displayDailyChallenges() {
+        print("\n🎯 TODAY'S MATH CHALLENGES:")
+        print("=" * 60)
+        
+        for (index, challenge) in dailyChallenges.enumerated() {
+            let difficultyIcon = getDifficultyIcon(challenge.difficulty)
+            print("\(difficultyIcon) Challenge \(index + 1): \(challenge.difficulty.rawValue)")
+            print("   📝 Equation: \(challenge.expression)")
+            if let result = challenge.result {
+                print("   ✅ Answer: \(result)")
+            }
+            print("   " + "-" * 45)
+        }
+    }
+    
+    // Get difficulty icon
+    private func getDifficultyIcon(_ difficulty: Equation.EquationDifficulty) -> String {
+        switch difficulty {
+        case .basic: return "🟢"
+        case .intermediate: return "🟡"
+        case .advanced: return "🟠"
+        case .expert: return "🔴"
+        }
+    }
+    
+    // Solve equation session
+    func startSolvingSession(for user: UserProfile) {
+        print("\n🧮 EQUATION SOLVING SESSION for \(user.name)")
+        print("=" * 60)
+        
+        let personalizedEquation = generatePersonalizedEquation(for: user)
+        print("📝 Your Equation: \(personalizedEquation.expression)")
+        print("📊 Difficulty: \(personalizedEquation.difficulty.rawValue)")
+        
+        if let solution = solveLinearEquation(personalizedEquation.expression) {
+            print("💡 Solution: x = \(solution)")
+        } else {
+            print("🤔 This equation requires advanced solving techniques")
+        }
+        
+        print("⏱️ Time limit: 5 minutes")
+    }
+}
